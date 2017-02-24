@@ -1,0 +1,16 @@
+web:
+  build: ./http/
+  links:
+    - db
+  ports:
+    - "81:80"
+  volumes:
+    - ./http:/var/www/html
+  env_file:
+    - ./dev.env
+db:
+  build: ./db/
+  ports:
+    - "3306:3306"
+  env_file:
+    - ./dev.env
