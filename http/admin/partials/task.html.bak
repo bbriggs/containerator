@@ -1,0 +1,91 @@
+<div class="widget-box" id="recent-box" ng-controller="tasksController">
+  <div class="widget-header header-color-blue">
+    <div class="row">
+      <div class="col-sm-6">
+        <h4 class="title">BEER MANAGER</h4>
+      </div>
+      <div class="col-sm-6">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-5">
+        <input type="text" ng-model="filterTask" class="form-control search header-elements-margin" placeholder="Filter Tasks">
+      </div>
+      <div class="col-sm-4">
+      </div>
+      <div class="col-sm-3">
+        <button ng-click="addNewClicked=!addNewClicked;" class="btn btn-sm btn-secondary header-elements-margin md-fab"><i class="glyphicon  glyphicon-plus"></i>&nbsp;Add New Beer</button>
+      </div>
+    </div>
+  </div>
+    <div class="widget-body ">
+      <form ng-init="addNewClicked=false; " ng-if="addNewClicked" id="newTaskForm" class="add-task">
+        <div class="form-actions">
+          <div class="input-group">
+            <input type="text" class="form-control" name="comment" ng-model="taskInput" placeholder="Add New Task" ng-focus="addNewClicked">
+            <div class="input-group-btn">
+              <button class="btn btn-default" type="submit" ng-click="addBeer(taskInput)"><i class="glyphicon glyphicon-plus"></i>&nbsp;Add New Beer</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    <div class="task">
+      <table>
+        <tr><th>ID</th><th>On Tap</th><th>Name</th>><th>Delete</th></tr>
+        <tr ng-repeat="task in tasks | filter : filterTask">
+          <td>{{task.id}}</td>
+          <td><input
+          	type="checkbox"
+          	value="{{task.on_tap}}"
+            ng-checked="task.on_tap==1"
+          	ng-click="toggleStatus(task.id, task.on_tap, task.beer_name)"/></td>
+          <td>{{task.beer_name}}</td>
+          <td><sa ng-click="deleteBeer(task.id)"><i class="glyphicon glyphicon-trash"></i></a></td>
+        </tr>
+      </table>
+      <!-- Begin test card  -->
+      <md-content id="main" layout="horizontal" layout-align="center">
+          <md-list>
+              <div id="content">
+                  <div ng-repeat="task in tasks | filter : filterTask">
+                      <p ng-if="task.beer_name">{{task.beer_name}}</p>
+                      <md-card ng-if="!chunk.expanded && !chunk.divider" ng-click="chunk.expanded = !chunk.expanded" ng-mouseover="hover = true" ng-mouseout="hover = false">
+                          <md-item layout="row">
+
+                              <div class="collapsed-row srm10" layout="row" layout-align="start center" flex>
+                                <div>
+                                    <img class="round-face" src="http://placekitten.com/g/48/48"/>
+                                </div>
+                                  <span flex="45"><b>{{task.beer_name}}</b></span>
+                                  <span flex="45">{{task.description }}</span>
+                                  <span flex="5"></span>
+                                  <span flex="10" ng-if="hover"><md-icon md-svg-src="bower_components/material-design-icons/content/svg/production/ic_archive_24px.svg" style="width: 24px; height: 24px;"></md-icon></span>
+                              </div>
+                          </md-item>
+                      </md-card>
+                      <md-card ng-if="chunk.expanded && !chunk.divider" ng-click="chunk.expanded = !chunk.expanded">
+                          <div layout="column">
+                              <div>
+                                  <img class="round-face" src="http://placekitten.com/g/48/48"/>
+                              </div>
+                              <md-card-content>
+                              <!-- <img src="http://placekitten.com/g/300/300"/> -->
+                              <h2>{{ chunk.title }}</h2>
+                              <p>{{ chunk.description }}</p>
+                              <div ng-if="chunk.content && chunk.content.type === 'QUOTE'">
+                                  <md-button ng-click="show_quotes = !show_quotes; $event.stopPropagation();">Show {{chunk.content.quotes.length}} quotes</md-button>
+                                  <div ng-if="show_quotes" ng-repeat="quote in ::chunk.content.quotes">
+                                      <md-whiteframe class="md-whiteframe-z1"><blockquote>{{ quote }}</blockquote></md-whiteframe>
+                                  </div>
+                              </div>
+                              </md-card-content>
+                          </div>
+                      </md-card>
+                  </div>
+              </div>
+          </md-list>
+      </md-content>
+      <!-- End test card -->
+    </div>
+  </div>
+</div>

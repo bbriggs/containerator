@@ -1,0 +1,79 @@
+<div class="widget-box" id="recent-box" ng-controller="tasksController">
+  <div class="widget-header header-color-blue">
+    <div class="row">
+      <div class="col-sm-6">
+        <h4 class="title">BEER MANAGER</h4>
+      </div>
+      <div class="col-sm-6">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-5">
+        <input type="text" ng-model="filterTask" class="form-control search header-elements-margin" placeholder="Filter Tasks">
+      </div>
+      <div class="col-sm-4">
+      </div>
+      <div class="col-sm-3">
+        <button ng-click="addNewClicked=!addNewClicked;" class="btn btn-sm btn-secondary header-elements-margin md-fab"><i class="glyphicon  glyphicon-plus"></i>&nbsp;Add New Beer</button>
+      </div>
+    </div>
+  </div>
+    <div class="widget-body ">
+      <form ng-init="addNewClicked=false; " ng-if="addNewClicked" id="newTaskForm" class="add-task">
+        <div class="form-actions">
+          <div class="input-group">
+            <input type="text" class="form-control" name="comment" ng-model="taskInput" placeholder="Add New Task" ng-focus="addNewClicked">
+            <div class="input-group-btn">
+              <button class="btn btn-default" type="submit" ng-click="addBeer(taskInput)"><i class="glyphicon glyphicon-plus"></i>&nbsp;Add New Beer</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    <div class="task">
+      <table>
+        <tr><th>ID</th><th>On Tap</th><th>Name</th>><th>Delete</th></tr>
+        <tr ng-repeat="task in tasks | filter : filterTask">
+          <td>{{task.id}}</td>
+          <td><input
+          	type="checkbox"
+          	value="{{task.on_tap}}"
+            ng-checked="task.on_tap==1"
+          	ng-click="toggleStatus(task.id, task.on_tap, task.beer_name)"/></td>
+          <td>{{task.beer_name}}</td>
+          <td><sa ng-click="deleteBeer(task.id)"><i class="glyphicon glyphicon-trash"></i></a></td>
+        </tr>
+      </table>
+      <!-- Begin test card  -->
+      <md-content id="main" layout="horizontal" layout-align="center">
+          <md-list>
+              <div id="content">
+                  <div ng-repeat="task in tasks | filter : filterTask">
+                      <!-- <p ng-if="task.beer_name">{{task.beer_name}}</p> -->
+                      <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
+                             <md-card-title>
+                               <md-card-title-text>
+                                 <span class="md-headline">{{task.beer_name}}</span>
+                                 <span class="md-subhead">OG: {{task.og}}  FG: {{task.fg}}  SRM: {{task.srm}}  ABV: {{task.abv}}% IBU: {{task.ibu}}</span>
+                               </br>
+                               <span class="md-subhead">{{task.description}}</span>
+                               </md-card-title-text>
+                               <md-card-title-media>
+                                 <div class="md-media-lg card-media"></div>
+                               </md-card-title-media>
+                             </md-card-title>
+                             <md-card-actions layout="row" layout-align="end center">
+                               <md-button><sa ng-click="deleteBeer(task.id)"><i class="glyphicon glyphicon-trash"></i></a></md-button>
+                               <md-button>Action 2</md-button>
+                               <md-switch ng-model="data.cb6" aria-label="Switch 6" ng-change="onChange(data.cb6)">
+                                  Switch 6 message: {{ message }}
+                                </md-switch>
+                             </md-card-actions>
+                      </md-card>
+                         </div>
+              </div>
+          </md-list>
+      </md-content>
+      <!-- End test card -->
+    </div>
+  </div>
+</div>
